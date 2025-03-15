@@ -46,6 +46,6 @@ please update the model name in the server.js file to the model you are running
 "const model="llama3.2"
 Start the Node.js server:
 node server.js
-Open the index.html file in any browser.
+Open the index.html file in any browser or just go to http://localhost:3000/chat.
 Note: This is a static HTML file containing JavaScript code to connect to the Node.js service.
 The file makes the required API calls to the Ollama HTTP service.
