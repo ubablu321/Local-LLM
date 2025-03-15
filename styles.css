@@ -6,6 +6,17 @@ body {
     flex-direction: column;
     height: 100vh;
 }
+header {
+    text-align: center;
+    background-color: skyblue;
+    padding: 20px;
+}
+
+header h1 {
+    margin: 0;
+    color: white;
+    font-family: Arial, sans-serif;
+}
 #chat-container {
     flex: 1;
     display: flex;
