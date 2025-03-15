@@ -42,6 +42,8 @@ npm install
 This will install all dependencies listed in the package.json file.
 
 ## Running the Application
+please update the model name in the server.js file to the model you are running
+"const model="llama3.2"
 Start the Node.js server:
 node server.js
 Open the index.html file in any browser.

@@ -6,7 +6,9 @@ const app = express();
 app.use(express.json());
 //Defult location for ollama. but if it different on your machine please update the variables accordingly
 const OLLAMA_API_URL_gen =  'http://127.0.0.1:11434/api/generate'; 
-const OLLAMA_API_URL_chat = 'http://127.0.0.1:11434/api/chat'; 
+const OLLAMA_API_URL_chat = 'http://127.0.0.1:11434/api/chat';
+//update the model name if you are using a different model
+const model="llama3.2";
 // To allow API calls from the file location
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -18,7 +20,7 @@ app.use((req, res, next) => {
 async function chatOllama(msg,res) {
     try {
         const response = await axios.post(OLLAMA_API_URL_chat, {
-            "model": "mistral",
+            "model": model,
             "messages": [{"role": "user", "content": msg}]
         }, { responseType: 'stream' }); // Set responseType to 'stream'
 
@@ -56,7 +58,7 @@ async function chatOllama(msg,res) {
 async function genOllama(prompt) {
     try {
         const response = await axios.post(OLLAMA_API_URL_gen, {
-            "model": "mistral", 
+            "model": model, 
             "prompt": prompt
         });
         return response.data
