@@ -1,9 +1,11 @@
 const express = require('express');
 const axios = require('axios');
 const { Readable } = require('stream');
+const path = require('path');
 // Create an Express app
 const app = express();
 app.use(express.json());
+app.use(express.static(path.join(__dirname)));
 //Defult location for ollama. but if it different on your machine please update the variables accordingly
 const OLLAMA_API_URL_gen =  'http://127.0.0.1:11434/api/generate'; 
 const OLLAMA_API_URL_chat = 'http://127.0.0.1:11434/api/chat';
@@ -77,6 +79,10 @@ app.post('/ollama/gen', (req, res) => {
     genOllama('Tell me a joke');
     res.send('Hello, World!');
 });
+app.get('/chat', (req, res) => {
+    res.sendFile(path.join(__dirname,'index.html'));
+});
+
 
 // Define the port
 const PORT = 3000;
