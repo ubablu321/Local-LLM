@@ -48,4 +48,4 @@ Start the Node.js server: node server.js
 
 Open the index.html file in any browser or just go to http://localhost:3000/chat.
 Note: This is a static HTML file containing JavaScript code to connect to the Node.js service.
-The file makes the required API calls to the Ollama HTTP service.
+The js files call the node server that inturn makes the required API calls to the Local Ollama HTTP service.
