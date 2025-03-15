@@ -3,63 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Application</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        #chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-        }
-        .message {
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-            white-space: pre-wrap;
-        }
-        .user {
-            background-color: #d1e7dd;
-            align-self: flex-end;
-        }
-        .bot {
-            background-color: #f8d7da;
-            align-self: flex-start;
-            max-width: 75%;
-        }
-        #input-container {
-            display: flex;
-            padding: 10px;
-            border-top: 1px solid #ccc;
-        }
-        #message-input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        #send-button {
-            margin-left: 10px;
-            padding: 10px 20px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #send-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Welcome to your LLM</title>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <div id="chat-container"></div>
@@ -67,92 +12,6 @@
         <input type="text" id="message-input" placeholder="Type your message here..." />
         <button id="send-button">Send</button>
     </div>
-
-    <script>
-        const chatContainer = document.getElementById('chat-container');
-        const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
-        let currentStreamReader = null;
-       // Function to add or update a message in the chat
-        function addOrUpdateMessage(content, sender, isUpdate = false) {
-            let messageDiv;
-            if(!isUpdate) {
-                // Create a new message if it doesn't exist
-                messageDiv = document.createElement('div');
-                messageDiv.classList.add('message', 'user');
-                messageDiv.textContent = content;
-                chatContainer.appendChild(messageDiv);
-                messageDiv = document.createElement('div');
-                messageDiv.classList.add('message', 'bot');
-                chatContainer.appendChild(messageDiv);
-            }
-            if (isUpdate) {
-                // Find the last message from the bot and update its content
-                const messages = chatContainer.getElementsByClassName(sender);
-                if (messages.length > 0) {
-                    messageDiv = messages[messages.length - 1];
-                    messageDiv.textContent = content;
-                }
-            }
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        // Handle send button click
-        sendButton.addEventListener('click', async () => {
-            stopStream(); // Stop the existing stream if any
-            const userMessage = messageInput.value.trim();
-            if (!userMessage) return;
-
-            // Add user message to chat
-            addOrUpdateMessage(userMessage, 'user');
-            messageInput.value = '';
-
-            // Send message to server
-            try {
-                const response = await fetch('http://localhost:3000/ollama/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ msg: userMessage })
-                });
-
-                // Check if the response body is a readable stream
-                const reader = response.body.getReader();
-                currentStreamReader = reader; // Track the current stream reader
-                const decoder = new TextDecoder('utf-8');
-                let result = '';
-
-                // Read the stream
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-
-                    // Decode the chunk and append it to the result
-                    const chunk = decoder.decode(value, { stream: true });
-                    result += JSON.parse(chunk).message?.content?.replace(/\*/g, '<br>') || '';
-
-                    // Update the bot's message dynamically
-                    addOrUpdateMessage(result, 'bot', true);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                addOrUpdateMessage('Error: Unable to connect to server.', 'bot');
-            }
-        });
-
-        // Handle Enter key press
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendButton.click();
-            }
-        });
-        // Function to stop the existing stream
-        function stopStream() {
-            if (currentStreamReader) {
-                currentStreamReader.cancel(); // Cancel the current stream
-                currentStreamReader = null; // Reset the stream reader
-                console.log('Stream stopped.');
-            }
-        }
-    </script>
+    <script src="./script.js"></script>
 </body>
 </html>
