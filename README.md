@@ -32,7 +32,7 @@ ollama serve
 Start as Chat Agent: Run the model with the command:
 ollama run {model_name}
 
-Encouragement
+## Encouragement
 If you've completed all the above steps, stop and pat yourself on the back. Then remind yourself: "We still have work to do... Continue!"
 
 ## Pre-requisites
