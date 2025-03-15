@@ -4,8 +4,10 @@ const { Readable } = require('stream');
 // Create an Express app
 const app = express();
 app.use(express.json());
+//Defult location for ollama. but if it different on your machine please update the variables accordingly
 const OLLAMA_API_URL_gen =  'http://127.0.0.1:11434/api/generate'; 
 const OLLAMA_API_URL_chat = 'http://127.0.0.1:11434/api/chat'; 
+// To allow API calls from the file location
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
